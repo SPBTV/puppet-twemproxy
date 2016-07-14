@@ -20,11 +20,21 @@ class twemproxy::params {
   $client_weight        = 1
 
   $package_manage       = true
-  $package_name         = 'twemproxy'
+  case $::osfamily {
+    'redhat': {
+      $package_name = 'nutcracker'
+      $service_name = 'nutcracker'
+      $nutcracker_conf_file = '/etc/nutcracker/nutcracker.yml'
+    }
+    default: {
+      $package_name = 'twemproxy'
+      $service_name = 'twemproxy'
+      $nutcracker_conf_file = '/etc/nutcracker.yml'
+    }
+  }
   $package_ensure       = 'present'
 
   $service_manage       = true
   $service_enable       = true
-  $service_name         = 'twemproxy'
   $service_ensure       = 'running'
 }

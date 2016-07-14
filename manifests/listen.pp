@@ -16,9 +16,11 @@ define twemproxy::listen (
   $server_retry_timeout = undef,
   $server_failure_limit = undef,
   $timeout              = undef,
+  $nutcracker_conf_file,
 ) {
 
-  concat { '/etc/nutcracker.yml':
+
+  concat { "$nutcracker_conf_file":
     owner => 'root',
     group => 'root',
     mode  => '0644',
@@ -26,7 +28,7 @@ define twemproxy::listen (
 
   concat::fragment { "${name}_listen_block":
     order   => "00_${order}",
-    target  => '/etc/nutcracker.yml',
+    target  => "$nutcracker_conf_file",
     content => template('twemproxy/twemproxy_listen_block.erb'),
   }
 }

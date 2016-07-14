@@ -4,6 +4,7 @@ define twemproxy::member (
   $client_port    = undef,
   $client_weight  = undef,
   $clients_array  = undef,
+  $nutcracker_conf_file,
 ) {
 
   if $client_address and $clients_array {
@@ -12,7 +13,7 @@ define twemproxy::member (
 
   concat::fragment { "${name}_member_block":
     order   => "01_${order}",
-    target  => '/etc/nutcracker.yml',
+    target  => "$nutcracker_conf_file",
     content => template('twemproxy/twemproxy_member_block.erb'),
   }
 }

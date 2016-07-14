@@ -20,6 +20,7 @@ define twemproxy::pool (
   $clients_array        = undef,
   $client_port          = $twemproxy::params::client_port,
   $client_weight        = $twemproxy::params::client_weight,
+  $nutcracker_conf_file = $twemproxy::params::nutcracker_conf_file,
 ) {
 
   if !$client_address and !$clients_array {
@@ -44,13 +45,15 @@ define twemproxy::pool (
     auto_eject_hosts     => $auto_eject_hosts,
     server_retry_timeout => $server_retry_timeout,
     server_failure_limit => $server_failure_limit,
+    nutcracker_conf_file => $nutcracker_conf_file,
   }
 
   twemproxy::member { $name:
-    order          => $order,
-    client_address => $client_address,
-    client_port    => $client_port,
-    client_weight  => $client_weight,
-    clients_array  => $clients_array,
+    order                => $order,
+    client_address       => $client_address,
+    client_port          => $client_port,
+    client_weight        => $client_weight,
+    clients_array        => $clients_array,
+    nutcracker_conf_file => $nutcracker_conf_file,
   }
 }
